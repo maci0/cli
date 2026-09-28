@@ -103,6 +103,23 @@ const unwrapSimpleRouteJson = (value: unknown) => {
   return value
 }
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null
+
+const unwrapSimpleRouteJson = (value: unknown) => {
+  if (
+    isRecord(value) &&
+    isRecord(value.simpleRouteJson) &&
+    ("connections" in value.simpleRouteJson ||
+      "obstacles" in value.simpleRouteJson ||
+      "bounds" in value.simpleRouteJson)
+  ) {
+    return value.simpleRouteJson
+  }
+
+  return value
+}
+
 type ExportOptions = {
   filePath: string
   format: ExportFormat
